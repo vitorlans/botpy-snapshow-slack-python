@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import sys
 import time
+import re
 
 from flask import Flask, Response, request
 
@@ -25,20 +26,40 @@ class Driver(PhantomJS):
         super(Driver, self).__init__(*args, **kwargs)
         self._log = StderrLog()
 
+'''
+token=ZQmNOZsweF3fKitZxZqWzzUB
+team_id=T0001
+team_domain=example
+channel_id=C2147483705
+channel_name=test
+user_id=U2147483697
+user_name=Steve
+command=/weather
+text=94070
+response_url=https://hooks.slack.com/commands/1234/5678
+'''
 
 @app.route("/")
 def index():
-    url = request.args.get("url", "")
+    #url = request.args.get("url", "")
+    text = request.args.get("text", "")
     width = int(request.args.get("w", 1000))
     min_height = int(request.args.get("h", 400))
     wait_time = float(request.args.get("t", 20)) / 1000  # ms
+    
+    if not text:
+        return "SNAPSHOW"
+
+    meta = text.split(' ')
+    
+    url = re.compile('%([0-9a-fA-F]{2})',re.M).sub(lambda m: chr(int(m.group(1),16)), meta[0]) 
+	#width = int(meta[1]) || '480x320'
 
     if not url:
-        return "Example: <a href='http://scrn.herokuapp.com/?url=http://en.ig.ma/&w=1200'>" \
-               "http://scrn.herokuapp.com/?url=http://en.ig.ma/</a>"
+        return "SNAPSHOW"
 
-    driver = Driver()
-    driver.set_window_position(0, 0)
+    driver = Driver
+    driver.set_window_position(driver, x=0, y=0)
     driver.set_window_size(width, min_height)
 
     driver.set_page_load_timeout(20)

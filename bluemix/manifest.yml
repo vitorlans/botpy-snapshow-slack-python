@@ -1,0 +1,11 @@
+applications:
+- name: snapch
+  host: snapch
+  memory: 128M
+  instances: 1
+  buildpack: https://bitbucket.org/cf-utilities/cf-buildpack-multi
+  path: .
+  disk_quota: 1024M
+  domain: mybluemix.net
+  #command:
+  #services:

@@ -41,16 +41,19 @@ response_url=https://hooks.slack.com/commands/1234/5678
 @app.route("/")
 def index():
     #url = request.args.get("url", "")
+    text = request.args.get("text", "")
     width = int(request.args.get("w", 1000))
     min_height = int(request.args.get("h", 400))
     wait_time = float(request.args.get("t", 20)) / 1000  # ms
     
+    if not text:
+        return "SNAPSHOW"
+
     meta = text.split(' ')
 
     url = meta[0].lower()
 	#width = int(meta[1]) || '480x320'
 
-    print(url)
     if not url:
         return "SNAPSHOW"
 

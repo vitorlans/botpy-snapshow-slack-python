@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import sys
 import time
+import re
 
 from flask import Flask, Response, request
 
@@ -50,8 +51,8 @@ def index():
         return "SNAPSHOW"
 
     meta = text.split(' ')
-
-    url = meta[0].lower()
+    
+    url = re.compile('%([0-9a-fA-F]{2})',re.M).sub(lambda m: chr(int(m.group(1),16)), meta[0]) 
 	#width = int(meta[1]) || '480x320'
 
     if not url:
